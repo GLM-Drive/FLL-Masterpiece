@@ -2,16 +2,14 @@ from base_robot import BaseRobot
 from pybricks.tools import wait, StopWatch
 
 def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int):
-    
-    kp = 3
-    ki = 0
-    kd = 0
-
+    kp = 5.466601
+    ki = 0.5314411
+    kd = -3.372691
     integral = 0
     prev_error = 0
 
     timer = StopWatch()
-    decel_start = 0
+    is_decelerating = False
 
     bot.hub.imu.reset_heading(0)
     while (bot.drivebase.distance() < distance):
@@ -31,9 +29,11 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int):
             power = min(accel * (timer.time() / 1000), speed)
 
         elif bot.drivebase.distance() / distance >= 0.70:
-            if decel_start == 0:
-                decel_start = timer.time()
-            power = max(1, speed - accel * ((timer.time() - decel_start) / 1000))
+            if not is_decelerating:
+                is_decelerating = True
+                timer.reset()
+            power = max(25.0, speed - (25 * (timer.time() / 1000)))
+            print(power)
 
         power_left = power + correction
         power_right = power - correction
@@ -57,7 +57,9 @@ def run_with_params(bot: BaseRobot, distance: int, speed: int, accel: int, kp: f
     decel_start = 0
 
     bot.hub.imu.reset_heading(0)
-    while (bot.drivebase.distance() < distance and timer.time() < 5000):
+    while (bot.drivebase.distance() < distance):
+        if timer.time() >= 3500:
+            return 999999999
         error = bot.hub.imu.heading()
 
         if (error == 0):
@@ -91,8 +93,8 @@ def run_with_params(bot: BaseRobot, distance: int, speed: int, accel: int, kp: f
 
     bot.drivebase.stop()
     bot.drivebase.reset()
-    bot.drivebase.turn(180)
 
+    bot.drivebase.turn(180)
     return total_error
 
 def pid_tune(base_robot: BaseRobot, distance: int, speed: int, accel: int, tol=0.2):
