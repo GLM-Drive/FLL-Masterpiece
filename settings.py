@@ -11,6 +11,10 @@ straight_accel = 600 # mm/s²
 turn_rate = 150 # deg/s
 # turn_accel = 360 # deg/s² # breaks the drivebase for some reason
 
+kp = 5.466601
+ki = 0.5314411
+kd = -3.372691
+
 # Motor Settings
 left_motor_port = Port.E
 left_motor_direction = Direction.COUNTERCLOCKWISE
