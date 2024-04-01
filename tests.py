@@ -11,7 +11,14 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int, kp: flo
     decel_start = 0
 
     bot.hub.imu.reset_heading(0)
-    while (bot.drivebase.distance() < distance):
+    bot.drivebase.stop()
+    bot.drivebase.reset()
+    bot.left_motor.dc(0)
+    bot.right_motor.dc(0)
+    while (abs(bot.drivebase.distance()) < distance):
+        if(timer.time() / 1000 > 7):
+            total_error = 999999
+            break
         error = bot.hub.imu.heading()
  
         if (error == 0):
@@ -25,7 +32,7 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int, kp: flo
  
         power = speed
         if bot.drivebase.distance() / distance <= 0.30:
-            power = min(accel * (timer.time() / 1000), speed)
+            power = min(accel * (timer.time() + 500 / 1000), speed)
 
         elif bot.drivebase.distance() / distance >= 0.70:
             if decel_start == 0:
@@ -45,17 +52,23 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int, kp: flo
 
     bot.drivebase.stop()
     bot.drivebase.reset()
+    bot.left_motor.dc(0)
+    bot.right_motor.dc(0)
     return total_error
 
 def pid_tune(base_robot: BaseRobot, distance: int, speed: int, accel: int, tol=0.2):
     p = [0.0, 0.0, 0.0]
     dp = [1.0, 1.0, 1.0]
     best_error = gyro_straight(base_robot, distance, speed, accel, p[0], p[1], p[2])
+    base_robot.drivebase.turn(180)
+    print(f"kp {p[0]} ki {p[1]} kd {p[2]} error {best_error}")
 
     while sum(dp) > tol:
         for i in range(len(p)):
             p[i] += dp[i]
             error = gyro_straight(base_robot, distance, speed, accel, p[0], p[1], p[2])
+            base_robot.drivebase.turn(180)
+            print(f"kp {p[0]} ki {p[1]} kd {p[2]} error {error} tol {sum(dp)}")
 
             if error < best_error:
                 best_error = error
@@ -63,6 +76,8 @@ def pid_tune(base_robot: BaseRobot, distance: int, speed: int, accel: int, tol=0
             else:
                 p[i] -= 2 * dp[i]
                 error = gyro_straight(base_robot, distance, speed, accel, p[0], p[1], p[2])
+                base_robot.drivebase.turn(180)
+                print(f"kp {p[0]} ki {p[1]} kd {p[2]} error {error}")
 
                 if error < best_error:
                     best_error = error
