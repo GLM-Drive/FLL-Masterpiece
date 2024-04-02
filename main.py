@@ -5,6 +5,7 @@ from pybricks.tools import hub_menu, wait
 import first_mission
 import second_mission
 import third_mission
+import fourth_mission
 import settings
 
 print("Initializing...")
@@ -18,13 +19,15 @@ base_robot.hub.system.set_stop_button(Button.BLUETOOTH)
 
 while(True):
         print("Waiting for user to select a mission.")
-        selected = hub_menu("1", "2", "3", "X", "G")
+        selected = hub_menu("1", "2", "3", "4", "X", "G")
         if selected == "1":
             first_mission.start(base_robot)
         elif selected == "2":
             second_mission.start(base_robot)
         elif selected == "3":
             third_mission.start(base_robot)
+        elif selected == "4":
+            fourth_mission.start(base_robot)
         elif selected == "X":
             break
         elif selected == "G":
