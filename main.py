@@ -8,6 +8,7 @@ import third_mission
 import fourth_mission
 import fifth_mission
 import sixth_mission
+import seventh_mission
 import settings
 
 print("Initializing...")
@@ -21,7 +22,7 @@ base_robot.hub.system.set_stop_button(Button.BLUETOOTH)
 
 while(True):
         print("Waiting for user to select a mission.")
-        selected = hub_menu("1", "2", "3", "4", "5", "6", "6", "X", "G")
+        selected = hub_menu("1", "2", "3", "4", "5", "6", "7", "X", "G")
         if selected == "1":
             first_mission.start(base_robot)
         elif selected == "2":
@@ -34,6 +35,8 @@ while(True):
             fifth_mission.start(base_robot)
         elif selected == "6":
             sixth_mission.start(base_robot)
+        elif selected == "7":
+            seventh_mission.start(base_robot)
         elif selected == "X":
             break
         elif selected == "G":
