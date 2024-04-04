@@ -36,7 +36,7 @@ def start(bot: BaseRobot):
     gyro_straight(bot, 100, 80, 25)
     turn(bot, 18, 35)
     # go to noah
-    gyro_straight(bot, 840, 80, 25)
+    gyro_straight(bot, 825, 80, 25)
     turn(bot, -35)
     # return home
     gyro_straight(bot, 500, 80, 25)
