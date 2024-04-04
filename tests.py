@@ -20,6 +20,7 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int, kp: flo
             total_error = 999999
             break
         error = bot.hub.imu.heading()
+        print(f"curr err driving {error}")
  
         if (error == 0):
             integral = 0
@@ -55,6 +56,25 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int, kp: flo
     bot.left_motor.dc(0)
     bot.right_motor.dc(0)
     return total_error
+
+def turn(bot: BaseRobot, angle: float, base_speed: float = 25, base_tol: float = 2):
+    bot.hub.imu.reset_heading(0)
+    timer = StopWatch()
+    curr_angle = bot.hub.imu.heading()
+    tol = 0.50
+    while(abs(curr_angle - angle) > tol):
+        curr_angle = bot.hub.imu.heading()
+        if timer.time() >= 1000:
+            tol = base_tol
+        if timer.time() >= 1500:
+            tol = base_tol + 2
+        if timer.time() >= 2500:
+            break
+        print(f"curr: {curr_angle} want: {angle} tol: {tol}")
+        bot.left_motor.dc(base_speed + angle - curr_angle)
+        bot.right_motor.dc(base_speed + -(angle - curr_angle))
+    bot.left_motor.dc(0)
+    bot.right_motor.dc(0)
 
 def pid_tune(base_robot: BaseRobot, distance: int, speed: int, accel: int, tol=0.2):
     p = [0.0, 0.0, 0.0]

@@ -1,17 +1,18 @@
 from base_robot import BaseRobot
-from tests import gyro_straight
+from tests import gyro_straight, turn
 from pybricks.tools import wait
 import settings
 
 def start(bot: BaseRobot):
-    settings.kp = 4.90436
-    settings.ki = 0.0
-    settings.kd = 2.221
-
+    prev_p = settings.kp
+    prev_i = settings.ki
+    prev_d = settings.kd
+    #settings.kp = 4.90436
+    #settings.ki = 0.0
+    #settings.kd = 2.221
     # drive to izzy
-    bot.drivebase.straight(90)
-    bot.drivebase.turn(-44.5)
-    gyro_straight(bot, 240, 80, 25)
+    turn(bot, -44, 37.5)
+    gyro_straight(bot, 300, 80, 25)
     # pick up izzy
     bot.right_attach_motor.dc(-80)
     wait(350)
@@ -29,30 +30,17 @@ def start(bot: BaseRobot):
     wait(100)
     # go back
     bot.hub.imu.reset_heading(0)
-    bot.left_motor.dc(-80)
-    bot.right_motor.dc(-85) # right side gets more power because of resistance
-    wait(950)
-    bot.left_motor.dc(0)
-    bot.right_motor.dc(0)
-    # turn and deposit sam
-    bot.drivebase.turn(-45.5 - bot.hub.imu.heading())
-    gyro_straight(bot, 230, 80, 25)
-    bot.hub.imu.reset_heading(0)
-    bot.drivebase.curve(500, 30) # avoid crashing into the boat
-    bot.drivebase.curve(500, -30)
-    bot.drivebase.turn(0 - bot.hub.imu.heading()) # straighten
-    gyro_straight(bot, 410, 80, 25)
-    bot.drivebase.curve(-255, 88) # curve to the carousel
-    bot.left_attach_motor.dc(-80)
-    wait(3350)
-    bot.left_attach_motor.dc(0)
-    # go back to home base and pick up noah
-    bot.left_motor.dc(-80)
-    bot.right_motor.dc(-80)
-    wait(600)
-    bot.left_motor.dc(0)
-    bot.right_motor.dc(0)
-    bot.drivebase.turn(21)
-    gyro_straight(bot, 250, 80, 25)
-    bot.drivebase.curve(380, 50)
-    gyro_straight(bot, 350, 80, 25)
+    bot.drivebase.straight(-350)
+    turn(bot, -45 - bot.hub.imu.heading(), 35)
+    # pick up sam
+    gyro_straight(bot, 100, 80, 25)
+    turn(bot, 18, 35)
+    # go to noah
+    gyro_straight(bot, 840, 80, 25)
+    turn(bot, -35)
+    # return home
+    gyro_straight(bot, 500, 80, 25)
+    bot.drivebase.brake()
+    settings.kp = prev_p
+    settings.ki = prev_i
+    settings.kd = prev_d

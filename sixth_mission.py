@@ -3,7 +3,7 @@ from tests import gyro_straight
 from base_robot import BaseRobot
 
 def start(bot: BaseRobot):
-    turn(bot, 46)
+    turn(bot, 46, 35)
     bot.hub.imu.reset_heading(0)
     gyro_straight(bot, 1200, 80, 25)
     turn(bot, -46 + bot.hub.imu.heading())
@@ -35,7 +35,7 @@ def start(bot: BaseRobot):
     bot.drivebase.curve(1500, 40)
     bot.drivebase.brake()
 
-def turn(bot: BaseRobot, angle: float):
+def turn(bot: BaseRobot, angle: float, base_speed: float = 25):
     bot.hub.imu.reset_heading(0)
     timer = StopWatch()
     curr_angle = bot.hub.imu.heading()
@@ -49,7 +49,7 @@ def turn(bot: BaseRobot, angle: float):
         if timer.time() >= 2500:
             break
         print(f"curr: {curr_angle} want: {angle} tol: {tol}")
-        bot.left_motor.dc(25 + angle - curr_angle)
-        bot.right_motor.dc(25 + -(angle - curr_angle))
+        bot.left_motor.dc(base_speed + angle - curr_angle)
+        bot.right_motor.dc(base_speed + -(angle - curr_angle))
     bot.left_motor.dc(0)
     bot.right_motor.dc(0)
