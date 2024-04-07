@@ -5,7 +5,7 @@ from base_robot import BaseRobot
 def start(bot: BaseRobot):
     turn(bot, 46, 35)
     bot.hub.imu.reset_heading(0)
-    gyro_straight(bot, 1200, 80, 25)
+    gyro_straight(bot, 1150, 80, 25)
     turn(bot, -46 + bot.hub.imu.heading())
     bot.drivebase.straight(30)
     bot.drivebase.straight(-70)
@@ -22,7 +22,7 @@ def start(bot: BaseRobot):
     wait(750)
     bot.right_motor.dc(0)
 
-    bot.drivebase.straight(-105)
+    bot.drivebase.straight(-110)
     turn(bot, 88.5)
     bot.drivebase.straight(650, wait=False)
     bot.left_attach_motor.dc(100)

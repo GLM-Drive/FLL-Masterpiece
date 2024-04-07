@@ -26,7 +26,7 @@ def start(bot: BaseRobot):
     wait(1000)
     bot.right_attach_motor.dc(0)
     bot.drivebase.straight(-175)
-    turn(bot, -45)
+    turn(bot, -45, 35)
     bot.drivebase.curve(1150, 20)
     bot.drivebase.brake()
     settings.kp = prev_p
