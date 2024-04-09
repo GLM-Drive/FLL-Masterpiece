@@ -21,16 +21,16 @@ def gyro_straight(bot: BaseRobot, distance: int, speed: int, accel: int, kp: flo
             break
         error = bot.hub.imu.heading()
         print(f"curr err driving {error}")
- 
+
         if (error == 0):
             integral = 0
         else:
             integral = integral + error 
- 
+
         derivative = error - prev_error  
- 
+
         correction = ((kp * error) + (ki * integral) + (kd * derivative)) * -1
- 
+
         power = speed
         if bot.drivebase.distance() / distance <= 0.30:
             power = min(accel * (timer.time() + 500 / 1000), speed)

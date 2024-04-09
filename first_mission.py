@@ -4,12 +4,6 @@ from pybricks.tools import wait
 import settings
 
 def start(bot: BaseRobot):
-    prev_p = settings.kp
-    prev_i = settings.ki
-    prev_d = settings.kd
-    #settings.kp = 4.90436
-    #settings.ki = 0.0
-    #settings.kd = 2.221
     # drive to izzy
     turn(bot, -44, 37.5)
     gyro_straight(bot, 300, 80, 25)
@@ -41,6 +35,3 @@ def start(bot: BaseRobot):
     # return home
     gyro_straight(bot, 500, 80, 25)
     bot.drivebase.brake()
-    settings.kp = prev_p
-    settings.ki = prev_i
-    settings.kd = prev_d
