@@ -11,7 +11,7 @@ def start(bot: BaseRobot):
     bot.left_motor.dc(75)
     bot.right_motor.dc(75)
     bot.left_attach_motor.dc(100)
-    wait(6599)
+    wait(3000)
     bot.left_motor.dc(0)
     bot.right_motor.dc(0)
     bot.left_attach_motor.dc(0)

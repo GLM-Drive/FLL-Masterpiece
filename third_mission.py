@@ -9,10 +9,10 @@ def start(bot: BaseRobot):
     bot.drivebase.turn(30)
     gyro_straight(bot, 740, 80, 25)
     # make sure izzy is on the skateboard
-    bot.drivebase.turn(30)
-    bot.drivebase.straight(90)
-    bot.drivebase.straight(-90)
-    bot.drivebase.turn(-30)
+    bot.drivebase.turn(10)
+    bot.drivebase.straight(80)
+    bot.drivebase.straight(-80)
+    bot.drivebase.turn(-10)
     # go to scene change thing
     bot.drivebase.straight(-120)
     bot.drivebase.turn(-77)

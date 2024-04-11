@@ -27,7 +27,7 @@ def start(bot: BaseRobot):
     bot.right_attach_motor.dc(0)
     bot.drivebase.straight(-175)
     turn(bot, -45, 35)
-    bot.drivebase.curve(1150, 20)
+    gyro_straight(bot, 350, 80, 25)
     bot.drivebase.brake()
     settings.kp = prev_p
     settings.ki = prev_i
