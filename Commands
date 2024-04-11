@@ -1,0 +1,1 @@
+python -m pybricksdev run ble main.py 
